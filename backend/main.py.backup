@@ -6,7 +6,6 @@ import uvicorn
 import os
 import time
 import logging
-import json
 from datetime import datetime, timedelta
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
@@ -131,7 +130,6 @@ async def create_comparison(
     image2_name: Optional[str] = Form(None, description="Optional name for second image"),
     include_visualizations: bool = Form(True, description="Include heatmap and overlay visualizations"),
     sensitivity: float = Form(50.0, ge=1.0, le=100.0, description="Sensitivity threshold (1-100)"),
-    ignore_regions: Optional[str] = Form(None, description="JSON string of ignore regions"),
     comparison_service: ImageComparisonService = Depends(get_image_comparison_service)
 ):
     """
@@ -166,17 +164,8 @@ async def create_comparison(
         if len(image2_data) > max_size:
             raise HTTPException(status_code=400, detail="Image2 file too large (max 10MB)")
         
-        # Parse ignore regions from JSON
-        regions = []
-        if ignore_regions:
-            try:
-                regions = json.loads(ignore_regions)
-            except json.JSONDecodeError:
-                logger.warning(f"Invalid ignore_regions JSON: {ignore_regions}")
-                regions = []
-        
         # Perform comparison
-        comparison_result = comparison_service.compare_images(image1_data, image2_data, sensitivity, regions)
+        comparison_result = comparison_service.compare_images(image1_data, image2_data, sensitivity)
         
         # Calculate processing time
         processing_time = (time.time() - start_time) * 1000  # Convert to milliseconds

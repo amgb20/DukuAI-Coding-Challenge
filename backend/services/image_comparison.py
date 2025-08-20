@@ -647,7 +647,7 @@ class ImageComparisonService:
                 )
             else:
                 # Fallback to original weights if no perceptual data
-            final_score = (
+                final_score = (
                 pixel_diff_score * 0.6 +
                 ssim_score * 0.3 +
                 mse_score * 0.1
