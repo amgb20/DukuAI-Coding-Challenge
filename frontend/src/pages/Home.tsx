@@ -292,9 +292,10 @@ const Home: React.FC = () => {
 
 # Weighted Scoring Formula
 final_score = (
-  pixel_diff_percentage * 0.6 +
-  (1 - ssim_score) * 100 * 0.3 +
-  normalized_mse * 0.1
+  pixel_diff_percentage * 0.4 +
+  ssim_score * 0.25 +
+  perceptual_score * 0.25 +
+  mse_score * 0.1
 )`}</CodeBlock>
             <MetricGrid>
               <Metric>

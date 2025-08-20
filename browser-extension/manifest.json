@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "DukuAI Visual Comparison",
+  "version": "1.0.0",
+  "description": "Capture, compare, and analyze visual changes on any website with AI-powered difference detection.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "downloads",
+    "contextMenus",
+    "scripting",
+    "notifications"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "http://localhost:3000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "DukuAI Visual Comparison",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"],
+    "css": ["overlay.css"],
+    "run_at": "document_end"
+  }],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

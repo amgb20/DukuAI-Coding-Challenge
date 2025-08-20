@@ -4,17 +4,47 @@ A modern full-stack web application built with React, FastAPI, PostgreSQL, and D
 
 ## 🚀 Features
 
-- **Image Comparison Engine**: Advanced pixel-level difference detection with SSIM, MSE, and visual analytics
+### 🖼️ **Advanced Image Comparison Engine**
+- **Multi-Algorithm Analysis**: SSIM, MSE, perceptual similarity, and visual analytics
+- **Enhanced Visualizations**: Heatmaps, overlays, difference highlighting, and changed object extraction
+- **Sensitivity Control**: Adjustable comparison thresholds (1-100% sensitivity)
+- **Ignore Regions**: Draw rectangles or freeform shapes to exclude areas from comparison
+- **Perceptual Similarity**: Texture, color, edge, and perceptual hash analysis
+- **ImageChops Integration**: Enhanced difference extraction and object isolation
+
+### 🎨 **Modern Frontend Experience**
+- **Landing Page**: Tech-focused home page with project overview and technology stack
+- **Interactive Comparison Tool**: Advanced image comparison interface at `/tech`
+- **Draggable Control Panel**: Auto-minimizing, repositionable region drawing controls
+- **Before/After Slider**: Interactive slider to toggle between original images
+- **Visual History Sidebar**: Collapsible history panel with image comparison tabs
+- **Real-time Drawing**: Rectangle and freeform shape drawing for ignore regions
+- **Touch Support**: Full mobile and tablet compatibility
+
+### 🏗️ **Robust Architecture**
 - **Modern Tech Stack**: React 18 + TypeScript (frontend), FastAPI + Python (backend), PostgreSQL (database), Redis (cache)
 - **Containerized Development**: Complete Docker setup with docker-compose
 - **RESTful API**: Comprehensive API with automatic documentation and file upload support
-- **Visual Difference Analysis**: Heatmap and overlay generation for difference visualization
+- **Client-Side Routing**: React Router with landing page and tool separation
 - **Database Integration**: PostgreSQL with comparison result persistence and statistics
+- **Performance Optimization**: 30-second timeout, automatic image preprocessing and resizing
+
+### 🔧 **Developer Experience**
 - **Comprehensive Testing**: Unit tests, API tests, and sample image generation
-- **Performance Optimization**: Automatic image preprocessing and resizing
 - **Health Monitoring**: Built-in health checks and monitoring endpoints
 - **Development Tools**: Hot reload, debugging, and testing setup
+- **Error Handling**: Graceful error recovery and user feedback
+- **API Documentation**: Auto-generated Swagger/OpenAPI documentation
 
+### 🌐 **Browser Extension**
+- **Chrome Extension**: Capture and compare images directly from any webpage
+- **Multiple Capture Modes**: Viewport, full page, and element-specific capture
+- **One-Click Workflow**: Before/after image comparison with visual feedback
+- **Context Menu Integration**: Right-click options on any webpage
+- **Inline Results**: View comparison results directly in the extension popup
+- **Element Selector**: Interactive highlighting and selection of page elements
+- **Settings Panel**: Configurable API endpoint, sensitivity, and preferences
+- **Progress Indicators**: Visual feedback during capture and comparison operations
 ## 🏗️ Architecture
 
 ```
@@ -82,7 +112,55 @@ Once the setup is complete, you can access:
 - **Database**: localhost:5432
 - **Redis**: localhost:6379
 
-## 🛠️ Development Commands
+### 🌐 Browser Extension
+
+Once installed, the browser extension provides:
+- **Extension Popup**: Click the DukuAI icon in Chrome toolbar
+- **Context Menu**: Right-click on any webpage for capture options
+- **Direct Integration**: Seamless connection to localhost:8000 backend
+- **Inline Results**: View comparison results within the extension popup
+
+## 🌐 Browser Extension Installation
+
+### Chrome Extension Setup
+
+1. **Navigate to Chrome Extensions:**
+   ```
+   chrome://extensions/
+   ```
+
+2. **Enable Developer Mode** (toggle in top-right corner)
+
+3. **Load the Extension:**
+   - Click "Load unpacked"
+   - Select the `browser-extension` folder:
+     ```
+     /Users/vinben007/Documents/Personal Apps/DukuAI-Coding-Challenge/browser-extension
+     ```
+
+4. **Pin the Extension:**
+   - Click the puzzle piece icon in Chrome toolbar
+   - Pin "DukuAI Visual Comparison" for easy access
+
+### Extension Features
+
+- **📷 Capture Modes**: Viewport, full page, or element selection
+- **🔄 Before/After Workflow**: Capture two images and compare instantly
+- **🔍 Inline Results**: View difference scores and metrics in popup
+- **⚙️ Settings**: Configure API endpoint and sensitivity
+- **📊 Full Results**: Option to open detailed analysis in web app
+
+### Usage
+
+1. **Visit any webpage** you want to analyze
+2. **Click the DukuAI extension icon**
+3. **Capture "before" image** → Click 📷 Capture Viewport
+4. **Make changes** or navigate to different version
+5. **Capture "after" image** → Click 📷 Capture Viewport again
+6. **Compare** → Click 🔍 Compare Images
+7. **View results** → See difference analysis in popup
+
+For detailed extension documentation, see `browser-extension/README.md`## 🛠️ Development Commands
 
 ### Using Make (Recommended)
 
@@ -151,7 +229,17 @@ DukuAI-Coding-Challenge/
 │       ├── test_backend.py     # Unit tests for algorithms
 │       └── test_backend_api.py # API integration tests
 ├── frontend/              # React frontend application
-│   ├── Dockerfile        # Frontend container configuration
+├── browser-extension/     # Chrome browser extension
+│   ├── manifest.json     # Extension configuration
+│   ├── popup.html        # Extension popup interface
+│   ├── popup.js          # Main extension logic
+│   ├── popup.css         # Extension styling
+│   ├── background.js     # Service worker and context menus
+│   ├── content.js        # Page interaction scripts
+│   ├── overlay.css       # Page overlay styles
+│   ├── icons/            # Extension icons (16px, 48px, 128px)
+│   ├── README.md         # Extension documentation
+│   └── INSTALL.md        # Installation instructions│   ├── Dockerfile        # Frontend container configuration
 │   ├── package.json      # Node.js dependencies
 │   ├── package-lock.json  # Dependency lock file (auto-generated)
 │   ├── tsconfig.json     # TypeScript configuration
@@ -313,10 +401,11 @@ The engine combines three complementary approaches:
 ```python
 # Weighted scoring formula (0-100% scale):
 final_score = (
-    pixel_difference_percentage * 0.6 +    # Primary factor (60%)
-    (1 - ssim_score) * 100 * 0.3 +        # Perceptual factor (30%)
-    normalized_mse * 0.1                   # Mathematical factor (10%)
-)
+                    pixel_diff_score * 0.4 +
+                    ssim_score * 0.25 +
+                    perceptual_score * 0.25 +
+                    mse_score * 0.1
+                )
 ```
 
 #### **4. Visual Output Generation**

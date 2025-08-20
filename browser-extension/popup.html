@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DukuAI Visual Comparison</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="dukuai-popup">
+    <div class="header">
+      <div class="logo">🔍</div>
+      <h3>DukuAI Comparison</h3>
+    </div>
+    
+    <div class="capture-section">
+      <button id="capture-viewport" class="capture-btn primary">
+        📷 Capture Viewport
+      </button>
+      <button id="capture-fullpage" class="capture-btn">
+        📄 Full Page
+      </button>
+      <button id="element-selector" class="capture-btn">
+        🎯 Select Element
+      </button>
+    </div>
+    
+    <div class="workflow-section">
+      <div class="workflow-status">
+        <span class="status-indicator" id="status-indicator"></span>
+        <span id="workflow-text">Ready to capture</span>
+      </div>
+      <button id="compare-now" class="action-btn" disabled>
+        🔍 Compare Images
+      </button>
+      <button id="clear-workflow" class="action-btn secondary">
+        🗑️ Clear
+      </button>
+    </div>
+    
+    <!-- Results Section - Initially Hidden -->
+    <div class="results-section" id="results-section" style="display: none;">
+      <div class="results-header">
+        <h4>🔍 Comparison Results</h4>
+        <button id="close-results" class="close-btn">✕</button>
+      </div>
+      <div class="results-content">
+        <div class="result-score">
+          <span class="score-label">Difference Score</span>
+          <span class="score-value" id="result-score">0%</span>
+        </div>
+        <div class="result-metrics">
+          <div class="metric">
+            <span class="metric-label">SSIM:</span>
+            <span class="metric-value" id="result-ssim">0%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Changed Pixels:</span>
+            <span class="metric-value" id="result-pixels">0</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Processing Time:</span>
+            <span class="metric-value" id="result-time">0ms</span>
+          </div>
+        </div>
+        <div class="result-images">
+          <div class="result-image-preview">
+            <img id="before-preview" alt="Before" style="display: none;">
+            <img id="after-preview" alt="After" style="display: none;">
+          </div>
+        </div>
+        <div class="result-actions">
+          <button id="view-full-results" class="action-btn primary">
+            📊 View Full Results
+          </button>
+          <button id="start-new-comparison" class="action-btn secondary">
+            🔄 New Comparison
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <details>
+        <summary>⚙️ Settings</summary>
+        <div class="settings-content">
+          <label>
+            API URL:
+            <input type="text" id="api-url" value="http://localhost:8000" placeholder="http://localhost:8000">
+          </label>
+          <label>
+            Sensitivity:
+            <input type="range" id="sensitivity" min="1" max="100" value="50">
+            <span id="sensitivity-value">50</span>%
+          </label>
+          <label>
+            <input type="checkbox" id="auto-open-results">
+            Auto-open results in new tab
+          </label>
+        </div>
+      </details>
+    </div>
+    
+    <div class="recent-captures" id="recent-captures">
+      <h4>Recent Captures</h4>
+      <div id="capture-list"></div>
+    </div>
+    
+    <div class="status-message" id="status-message" style="display: none;"></div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
